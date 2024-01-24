@@ -34,7 +34,7 @@ function go() {
         .then((answer) => {
             switch (answer.choices) {
                 case "View All Employees":
-                    viewAllEmployees(); //3 Not Functioning
+                    viewAllEmployees(); //3 Functioning but wont show values
                     break;
                 case "Add Employee": //6 Not Functioning
                     addEmployee();
@@ -42,16 +42,16 @@ function go() {
                 case "Update Employee Role": //7 Not Functioning
                     updateEmployeeRole();
                     break;
-                case "View All Roles": //2 Not Functioning
+                case "View All Roles": //2 Fully Functioning
                     viewAllRoles();
                     break;
-                case "Add Role": //5 Functioning
+                case "Add Role": //5 Slightly Functioning but throwing err
                     addRole();
                     break;
-                case "View All Departments": //1 Functioning
+                case "View All Departments": //1 Fully Functioning
                     viewAllDepartments();
                     break;
-                case "Add Department": //4 Functioning
+                case "Add Department": //4 Fully Functioning
                     addDepartment();
                     break;
             }
@@ -68,7 +68,7 @@ function viewAllDepartments() {
 };
 
 function viewAllRoles() {
-    const query = 'SELECT roles.id, roles.title, departments.department_name, roles.salary from roles join departments on roles.department_id = departments.id';
+    const query = 'SELECT * FROM roles';
     db.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
@@ -77,14 +77,11 @@ function viewAllRoles() {
 };
 
 function viewAllEmployees() {
-    const query = `SELECT e.id, e.first_name, e.last_name, r.title. d.department_name, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
-    FROM employee e
-    LEFT JOIN roles r ON e.role_id = r.id
-    LEFT JOIN departments d ON r.department_id = d.id
-    LEFT JOIN employee m ON e.manager_id = m.id;`;
+    const query = `SELECT * FROM employee`;
     db.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
+        go();
     });
 };
 
@@ -141,6 +138,7 @@ function addRole() {
                         title: answers.title,
                         salary: answers.salary,
                         department_id: department,
+                        department_name: department,
                     },
                     (err, res) => {
                         if (err) throw err;
@@ -154,7 +152,7 @@ function addRole() {
 }
 
 function addEmployee() {
-    db.query("SELECT id, title FROM roles", (error, results) => {
+    db.query("SELECT title FROM roles", (error, results) => {
         if (error) {
             console.error(error);
             return;
