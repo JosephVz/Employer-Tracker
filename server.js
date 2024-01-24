@@ -34,24 +34,24 @@ function go() {
         .then((answer) => {
             switch (answer.choices) {
                 case "View All Employees":
-                    viewAllEmployees(); //3
+                    viewAllEmployees(); //3 Not Functioning
                     break;
-                case "Add Employee": //6
+                case "Add Employee": //6 Not Functioning
                     addEmployee();
                     break;
-                case "Update Employee Role": //7
+                case "Update Employee Role": //7 Not Functioning
                     updateEmployeeRole();
                     break;
-                case "View All Roles": //2
+                case "View All Roles": //2 Not Functioning
                     viewAllRoles();
                     break;
-                case "Add Role": //5
+                case "Add Role": //5 Functioning
                     addRole();
                     break;
-                case "View All Departments": //1
+                case "View All Departments": //1 Functioning
                     viewAllDepartments();
                     break;
-                case "Add Department": //4
+                case "Add Department": //4 Functioning
                     addDepartment();
                     break;
             }
@@ -96,11 +96,11 @@ function addDepartment() {
             message: 'Enter the name of the new department:',
         })
         .then((answer) => {
-            console.log(answer.name);
+            console.log(`${answer.name} added to database.`);
             const query = `INSERT INTO departments (department_name) VALUES ('${answer.name}')`;
             db.query(query, (err, res) => {
                 if (err) throw err;
-                console.log(answer.name);
+                go();
             });
         });
 };
@@ -146,7 +146,7 @@ function addRole() {
                         if (err) throw err;
                         console.log(`Added role ${answers.title} with salary ${answers.salary} to the ${answers.department} department in the database.`
                         );
-                        start();
+                        go();
                     }
                 );
             });
@@ -222,7 +222,7 @@ function addEmployee() {
                             }
 
                             console.log("Employee added successfully");
-                            start();
+                            go();
                         });
                     })
                     .catch((error) => {
@@ -278,7 +278,7 @@ function updateEmployeeRole() {
                             console.log(
                                 `Updated ${employee.first_name} ${employee.last_name}'s role to ${role.title} in the database!`
                             );
-                            start();
+                            go();
                         }
                     );
                 });
