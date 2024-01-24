@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
-const mysql = require('mysql2');
+const sql = require('mysql2');
 
-const db = mysql.createConnection({
+const db = sql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
@@ -9,9 +9,15 @@ const db = mysql.createConnection({
     database: 'employeeTracker_db',
 });
 
+db.connect((err) => {
+    if (err) throw err;
+    console.log("Connected to the database.");
+    go();
+})
+
 function go() {
     inquirer
-        .createPromptModule({
+        .prompt({
             type: 'list',
             name: 'choices',
             message: 'What would you like to do?',
